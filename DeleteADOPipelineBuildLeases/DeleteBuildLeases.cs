@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace DeleteADOPipelineBuildLeases
 {
-
     /// <summary>
     /// This C# console application streamlines the deletion process of build pipelines in Azure DevOps. 
     /// It addresses the issue where build leases on each build within the pipeline prevent you from deleting the build pipeline. Removing all these build leases manually is a time-consuming task, and this code is designed to automate the process.
@@ -23,13 +23,11 @@ namespace DeleteADOPipelineBuildLeases
 
         static async Task Main(string[] args)
         {
-            string personalAccessToken = ""; // Paste your ADO Personal Access Token here
-            string buildDefinitionId = "";   // Replace with your build pipeline ID
-            string organization = "";        // Replace with your ADO organization name
-            string project = "";             // Replace with your ADO project name
+            var configuration = LoadConfiguration();
 
-            client = InitializeHttpClient(personalAccessToken, organization, project);
+            client = InitializeHttpClient(configuration);
 
+            string buildDefinitionId = configuration["BuildDefinitionId"];
             List<Build> builds = await GetAllBuilds(buildDefinitionId);
 
             var deleteTasks = new List<Task>();
@@ -48,14 +46,6 @@ namespace DeleteADOPipelineBuildLeases
             }
             await Task.WhenAll(deleteTasks);
             Console.WriteLine("Successfully deleted all build leases. Now the pipelines can be deleted as usual in ADO");
-        }
-
-        static HttpClient InitializeHttpClient(string personalAccessToken, string organization, string project)
-        {
-            var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri($"https://dev.azure.com/{organization}/{project}/");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{personalAccessToken}")));
-            return httpClient;
         }
 
         static async Task<List<Build>> GetAllBuilds(string buildDefinitionId)
@@ -120,29 +110,25 @@ namespace DeleteADOPipelineBuildLeases
                 Console.WriteLine($"Exception message: {ex.Message}");
             }
         }
-    }
 
-    class Build
-    {
-        public int Id { get; set; }
-        public bool RetainedByRelease { get; set; }
-    }
+        static IConfiguration LoadConfiguration()
+        {
+            return new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+        }
 
-    class BuildLease
-    {
-        public int LeaseId { get; set; }
-        public bool ProtectPipeline { get; set; }
-    }
+        static HttpClient InitializeHttpClient(IConfiguration configuration)
+        {
+            string organization = configuration["Organization"];
+            string project = configuration["Project"];
+            string personalAccessToken = configuration["PersonalAccessToken"];
 
-    class BuildModel
-    {
-        [JsonProperty("value")]
-        public List<Build> Value { get; set; }
-    }
-
-    class LeaseModel
-    {
-        [JsonProperty("value")]
-        public List<BuildLease> Value { get; set; }
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri($"https://dev.azure.com/{organization}/{project}/");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{personalAccessToken}")));
+            return httpClient;
+        }
     }
 }
