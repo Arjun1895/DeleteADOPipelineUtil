@@ -7,21 +7,21 @@ Once all build leases are removed from each build, you can delete the build pipe
 
 ## Prerequisites
 
-Before running the application, please ensure that you configure the following variables in the DeleteBuildLeases.cs file with appropriate values:
+Before running the application, please ensure that you configure the following variables in the appsettings.json file with appropriate values:
 
-- **`personalAccessToken`**: Your Azure DevOps Personal Access Token (PAT) for authentication. Go to user settings -> Personal Access Tokens in Azure DevOps and create a new token with appropriate permissions for modifying pipelines. Copy the token and paste it below.
+- **`PersonalAccessToken`**: Your Azure DevOps Personal Access Token (PAT) for authentication. Go to user settings -> Personal Access Tokens in Azure DevOps and create a new token with appropriate permissions for modifying pipelines. Copy the token and paste it below.
 
-- **`buildDefinitionId`**: The unique identifier of the specific build pipeline you want to manage.
+- **`BuildDefinitionId`**: The unique identifier of the specific build pipeline you want to manage.
 
-- **`organization`**: The name of your Azure DevOps organization.
+- **`Organization`**: The name of your Azure DevOps organization.
 
-- **`project`**: The name of your Azure DevOps project.
+- **`Project`**: The name of your Azure DevOps project.
 
 ## Usage
 
 To use this utility, follow these steps:
 
-1. Configure the variables mentioned in the "Prerequisites" section.
+1. Configure the settings mentioned in the "Prerequisites" section.
 
 2. Build and run the application.
 
