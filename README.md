@@ -21,10 +21,19 @@ Before running the application, please ensure that you configure the following v
 
 To use this utility, follow these steps:
 
-1. Configure the settings mentioned in the "Prerequisites" section.
+**Option 1: Using Visual Studio**
 
-2. Build and run the application.
+1. Clone the repository and open the `DeleteADOPipelineBuildLeases.sln` in Visual Studio.
+2. Configure the variables in the `applicationsettings.json` file as mentioned in the prerequisites.
+3. Build and run the application.
+4. The application will retrieve the build leases for the specified build pipeline and remove them automatically.
+5. Once all build leases are removed, you can proceed to delete the build pipeline in Azure DevOps.
 
-3. The application will retrieve the build leases for the specified build pipeline and remove them automatically.
+**Option 2: Using Executable**
 
-4. Once all build leases are removed, you can proceed to delete the build pipeline in Azure DevOps.
+1. Clone the repository and open the `bin\Release\net6.0` folder where the `DeleteADOPipelineBuildLeases.exe` file is present.
+2. Edit the `applicationsettings.json` file in a text editor and update the variables as mentioned in the prerequisites.
+3. Open a command line in the `bin\Release\net6.0` folder where the `DeleteADOPipelineBuildLeases.exe` file is present.
+4. Run the executable by typing `.\DeleteADOPipelineBuildLeases.exe` and press Enter.
+5. The application will retrieve the build leases for the specified build pipeline and remove them automatically.
+6. Once all build leases are removed, you can proceed to delete the build pipeline in Azure DevOps.
