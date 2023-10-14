@@ -25,6 +25,9 @@ To use this utility, follow these steps:
 1. Download the code as a zip file and extract it. Navigate to the folder (bin\Release\net6.0) containing the `DeleteADOPipelineBuildLeases.exe` file, then double-click it.
 2. Follow the on-screen prompts to enter the prerequisites as mentioned.
 
+![image](https://github.com/Arjun1895/DeleteADOPipelineUtil/assets/147662498/0eedca08-8dd2-4408-843d-ebd86986a706)
+
+
 **Option 2: Using Visual Studio**
 
 1. Clone the repository and open the `DeleteADOPipelineBuildLeases.sln` in Visual Studio.
