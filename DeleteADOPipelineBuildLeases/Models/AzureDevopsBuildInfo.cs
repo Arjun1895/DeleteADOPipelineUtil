@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace DeleteADOPipelineBuildLeases
+namespace DeleteADOPipelineBuildLeases.Models
 {
     public class Build
     {
@@ -14,13 +14,13 @@ namespace DeleteADOPipelineBuildLeases
         public bool ProtectPipeline { get; set; }
     }
 
-    public class BuildModel
+    public class AzureDevopsBuildInfo
     {
         [JsonProperty("value")]
         public List<Build> Value { get; set; }
     }
 
-    public class LeaseModel
+    public class AzureDevopsLeaseInfo
     {
         [JsonProperty("value")]
         public List<BuildLease> Value { get; set; }

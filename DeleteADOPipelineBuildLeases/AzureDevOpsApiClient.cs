@@ -1,4 +1,5 @@
 ﻿using DeleteADOPipelineBuildLeases.Interfaces;
+using DeleteADOPipelineBuildLeases.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -9,11 +10,11 @@ namespace DeleteADOPipelineBuildLeases
     {
         private readonly HttpClient client;
 
-        public AzureDevOpsApiClient(string personalAccessToken, string organization, string project)
+        public AzureDevOpsApiClient(AzureDevOpsConfiguration config)
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri($"https://dev.azure.com/{organization}/{project}/");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{personalAccessToken}")));
+            client.BaseAddress = new Uri($"https://dev.azure.com/{config.Organization}/{config.Project}/");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{config.PersonalAccessToken}")));
         }
 
         public async Task<List<Build>> GetAllBuilds(string buildDefinitionId)
@@ -24,7 +25,7 @@ namespace DeleteADOPipelineBuildLeases
                 var responseBody = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    return JsonConvert.DeserializeObject<BuildModel>(responseBody).Value;
+                    return JsonConvert.DeserializeObject<AzureDevopsBuildInfo>(responseBody).Value;
                 }
                 else
                 {
@@ -48,7 +49,7 @@ namespace DeleteADOPipelineBuildLeases
                 var responseBody = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    return JsonConvert.DeserializeObject<LeaseModel>(responseBody).Value;
+                    return JsonConvert.DeserializeObject<AzureDevopsLeaseInfo>(responseBody).Value;
                 }
                 else
                 {

@@ -1,4 +1,6 @@
-﻿namespace DeleteADOPipelineBuildLeases.Interfaces
+﻿using DeleteADOPipelineBuildLeases.Models;
+
+namespace DeleteADOPipelineBuildLeases.Interfaces
 {
     public interface IAzureDevOpsApiClient
     {
